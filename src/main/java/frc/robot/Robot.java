@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
    m_robotDrive.tankDrive(m_stick.getRawAxis(1), m_stick.getRawAxis(5), true);
 
    // Pressing "A" will shift the gear
-   if (m_stick.getRawButton(1)) {
+   if (m_stick.getRawButtonPressed(1)) {
      gearShiftSolenoid.set(!gearShiftSolenoid.get());
    }
    
