@@ -111,11 +111,16 @@ public class Robot extends TimedRobot {
    // m_robotDrive.arcadeDrive(m_stick.getY() * -1, m_stick.getX() * -1);
    //m_robotDrive.tankDrive(m_stick.getY(Hand.kLeft), m_stick.getY(Hand.kRight), true);
    m_robotDrive.tankDrive(m_stick.getRawAxis(1), m_stick.getRawAxis(5), true);
+
+   // Pressing "A" will shift the gear
+   if (m_stick.getRawButton(1)) {
+     gearShiftSolenoid.set(!gearShiftSolenoid.get());
+   }
    
    
   }
 
-  /**
+  /*
    * This function is called periodically during test mode.
    */
   @Override
