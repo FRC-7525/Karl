@@ -43,20 +43,16 @@ public class Drivetrain extends SubsystemBase {
     leftFront.setInverted(false);
     leftFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, DriveConstants.PIDIDX, 10);
     leftFront.setSensorPhase(false);
-    leftFront.setNeutralMode(NeutralMode.Brake);
 
     leftBack.setInverted(InvertType.FollowMaster);
     leftBack.follow(leftFront);
-    leftBack.setNeutralMode(NeutralMode.Brake);
 
     rightFront.setInverted(false);
     rightFront.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, DriveConstants.PIDIDX, 10);
     rightFront.setSensorPhase(true);
-    rightFront.setNeutralMode(NeutralMode.Brake);
 
     rightBack.setInverted(InvertType.FollowMaster);
     rightBack.follow(rightFront);
-    rightBack.setNeutralMode(NeutralMode.Brake);
 
     zeroHeading();
     resetOdometry(new Pose2d());
@@ -130,6 +126,13 @@ public class Drivetrain extends SubsystemBase {
 
   public double getTurnRate() {
     return navx.getRate() * -1;
+  }
+
+  public void setNeutralMode(NeutralMode mode){
+    leftFront.setNeutralMode(mode);
+    leftBack.setNeutralMode(mode);
+    rightFront.setNeutralMode(mode);
+    rightBack.setNeutralMode(mode);
   }
 
 }

@@ -27,21 +27,17 @@ public class Turret extends SubsystemBase {
     flywheel1.setInverted(false);
     flywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, TurretConstants.PIDIDX, 10);
     flywheel1.setSensorPhase(false);
-    flywheel1.setNeutralMode(NeutralMode.Brake);
 
     flywheel2.setInverted(true);
     flywheel2.follow(flywheel1);
-    flywheel2.setNeutralMode(NeutralMode.Brake);
 
     neck.setInverted(false);
     neck.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, TurretConstants.PIDIDX, 10);
     neck.setSensorPhase(false);
-    neck.setNeutralMode(NeutralMode.Brake);
 
     hood.setInverted(false);
     hood.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.Analog, TurretConstants.PIDIDX, 10);
     hood.setSensorPhase(false);
-    hood.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -58,6 +54,13 @@ public class Turret extends SubsystemBase {
 
   public void setHoodPercent(double percent){
     hood.set(ControlMode.PercentOutput, percent);
+  }
+
+  public void setNeutralMode(NeutralMode mode){
+    flywheel1.setNeutralMode(mode);
+    flywheel2.setNeutralMode(mode);
+    neck.setNeutralMode(mode);
+    hood.setNeutralMode(mode);
   }
 
 }

@@ -2,28 +2,18 @@ package frc.robot;
 
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AutonDrive;
 import frc.robot.commands.DriveWithController;
-import frc.robot.commands.TurretJoystickControl;
+import frc.robot.commands.SetFlywheelPercent;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -36,6 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Turret m_turret = new Turret();
+  private final Intake m_intake = new Intake();
   
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -56,9 +47,6 @@ public class RobotContainer {
             m_drivetrain,
             () -> -m_driverController.getY(GenericHID.Hand.kLeft),
             () -> m_driverController.getX(GenericHID.Hand.kRight)));
-
-    // Set the default joystick control of turret
-    m_turret.setDefaultCommand(new TurretJoystickControl(m_turret, m_driverController));
   }
 
   /**
@@ -68,6 +56,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Spin flywheel while a button is pressed
+    new JoystickButton(m_driverController, 6)
+        .whenPressed(new SetFlywheelPercent(m_turret, 0.1))
+        .whenReleased(new SetFlywheelPercent(m_turret, 0.0));
   }
 
   /* TODO: only here temporarily while transitioning to CommandBased */
@@ -82,5 +74,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new AutonDrive(m_drivetrain);
+  }
+
+  /**
+   * Set the Neutral mode of all motors on the robot
+   * This is useful for making the robot easier to push and manipulate when disabled.
+   */
+  public void setNeutralMode(NeutralMode mode){
+    m_drivetrain.setNeutralMode(mode);
+    m_turret.setNeutralMode(mode);
+    m_intake.setNeutralMode(mode);
   }
 }

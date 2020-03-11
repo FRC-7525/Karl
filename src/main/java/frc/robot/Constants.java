@@ -38,8 +38,8 @@ public final class Constants {
         public static final int flywheel1 = 4;
         public static final int flywheel2 = 5;
 
-        public static final int neck = 0; // Needs to be set
-        public static final int hood = 0; // Needs to be set
+        public static final int neck = 6;
+        public static final int hood = 7;
 
         public static final int PIDIDX = 0;
 
@@ -47,6 +47,20 @@ public final class Constants {
         public static final double kFlywheelI = 0.0;
         public static final double kFlywheelD = 0.0;
         public static final double kFlywheelF = 0.0;
+    }
+    
+    public static final class IntakeConstants {
+        public static final int joint = 8;
+
+        // Sensor values to represent joint position in stowed and floor pickup states
+        public static final int stowedPosition = 0;
+        public static final int pickupPosition = 0;
+
+        public static final int roller = 9;
+
+        public static final int hopperSolenoid = 1;
+
+        public static final int PIDIDX = 0;
     }
 
     public static final class AutoConstants {
