@@ -16,10 +16,15 @@ public class SetIntakeState extends CommandBase {
     addRequirements(intake);
   }
 
+  // Called once when the command is started
+  @Override
+  public void initialize() {
+    m_intake.setState(m_state);
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.setState(m_state);
   }
 
   // Returns true when the command should end.

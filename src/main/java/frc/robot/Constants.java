@@ -39,6 +39,13 @@ public final class Constants {
         public static final int flywheel2 = 5;
 
         public static final int neck = 6;
+
+        public static final int neckMagSensor = 0;
+
+        // Maximum rotation angles of the neck
+        public static final int maxNeckAngle = 90;
+        public static final int minNeckAngle =  -90;
+
         public static final int hood = 7;
 
         public static final int PIDIDX = 0;

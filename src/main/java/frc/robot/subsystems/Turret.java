@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -19,6 +20,10 @@ public class Turret extends SubsystemBase {
 
   // The motor on the neck
   private WPI_TalonSRX neck = new WPI_TalonSRX(TurretConstants.neck);
+
+  // The magnet sensor to zero the neck position
+  private DigitalInput magSensor = new DigitalInput(TurretConstants.neckMagSensor);
+  private boolean neckHasZeroed = false; // Represent if neck has been zeroed
 
   // The motor on the hood
   private WPI_TalonSRX hood = new WPI_TalonSRX(TurretConstants.hood);
@@ -42,6 +47,13 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
+      if(!neckHasZeroed && magSensor.get()){
+        neck.setSelectedSensorPosition(0);
+      }
+  }
+
+  public double getNeckAngle(){
+    return 0; // TODO
   }
 
   public void setFlyWheelPercent(double percent){
@@ -49,7 +61,13 @@ public class Turret extends SubsystemBase {
   }
 
   public void setNeckPercent(double percent){
-    neck.set(ControlMode.PercentOutput, percent);
+    double angle = getNeckAngle();
+    if((percent > 0 && angle < TurretConstants.maxNeckAngle) ||
+       (percent < 0 && angle > TurretConstants.minNeckAngle)){
+        neck.set(ControlMode.PercentOutput, percent);
+    }else{
+        neck.set(ControlMode.PercentOutput, 0.0);
+    }
   }
 
   public void setHoodPercent(double percent){

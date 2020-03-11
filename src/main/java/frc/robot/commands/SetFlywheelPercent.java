@@ -15,10 +15,15 @@ public class SetFlywheelPercent extends CommandBase {
     addRequirements(turret);
   }
 
+   // Called once when the command is started
+   @Override
+   public void initialize() {
+    m_turret.setFlyWheelPercent(m_percent);
+   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_turret.setFlyWheelPercent(m_percent);
   }
 
   // Returns true when the command should end.
